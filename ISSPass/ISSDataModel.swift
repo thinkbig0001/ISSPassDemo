@@ -49,6 +49,10 @@ struct record {      //Results received has two elements
 
 func initiateDataLoadRequest(params: reqParams) {
     
+//    dataModel.removeAll()
+//    dataModel = loadDummyData()
+//    return
+    
     //convert passed parameters into a string - ensure required parameters are present
     //if time permits ensure it's in correct format
     guard !(params.latitude.isEmpty) && !(params.longitude.isEmpty) else {
@@ -128,4 +132,19 @@ func parseJSON(data: Any?) -> [record] {
     //return our data
     return model
 
+}
+
+func loadDummyData() -> [record] {
+    var model = [record]()
+    
+    let rec = record(rise: Date(),dur: 3747)
+    model.append(rec)
+    
+    //Notify that data has been loaded
+    let nc = NotificationCenter.default
+    nc.post(name:myNotification,
+            object: nil,
+            userInfo:["message":"data loaded", "date":Date()])
+
+    return model
 }

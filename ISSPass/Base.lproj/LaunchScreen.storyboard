@@ -31,6 +31,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Tapan Biswas" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qt1-7R-0Q7">
+                                <rect key="frame" x="97" y="438" width="164" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="mdq-8y-r8M"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.46202266219999999" green="0.83828371759999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -40,6 +49,9 @@
                             <constraint firstItem="DrR-ja-ICI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OEA-SP-kLG"/>
                             <constraint firstItem="DrR-ja-ICI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="PhJ-bW-vPJ"/>
                             <constraint firstItem="pcl-Sk-jMp" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="STJ-Qa-9T4"/>
+                            <constraint firstItem="qt1-7R-0Q7" firstAttribute="top" secondItem="pcl-Sk-jMp" secondAttribute="bottom" constant="7.6699999999999999" id="ctL-jI-qJJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qt1-7R-0Q7" secondAttribute="trailing" constant="114" id="gCk-zs-yo4"/>
+                            <constraint firstItem="qt1-7R-0Q7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="97" id="yqH-vf-dOH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

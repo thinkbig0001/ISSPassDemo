@@ -22,18 +22,21 @@ import CoreLocation
 var dataModel: [record] = [] //blank array to start with
 let myNotification = Notification.Name(rawValue:"DataLoaded")
 fileprivate let cellIdentifier = "cell"
+fileprivate let headerIdentifier = "ISSHeader"
 
 class MainViewController: UIViewController {
 
     //MARK: Properties
-    @IBOutlet weak var numPasses: UILabel!
+    @IBOutlet weak var lblNumPasses: UILabel!
     @IBOutlet weak var stepper: UIStepper!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var refreshButton: UIButton!
-    @IBOutlet weak var userLocation: UILabel!
+    @IBOutlet weak var btnRefresh: UIButton!
+    @IBOutlet weak var lblUserLocation: UILabel!
+    @IBOutlet weak var btnClear: UIButton!
     
     var location: CLLocationCoordinate2D?       //To save user's current GPS location
     var locationManager = CLLocationManager()    //Use LocationManager class to get location
+    var toggleSecsToHour: Bool = false          //A switch to toggle duration display between seconds & hour format
     
     //MARK: Action Methods
     @IBAction func refreshData(_ sender: UIButton) {
@@ -43,8 +46,8 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func setPasses(_ sender: UIStepper) {
-        //Set the value in numPasses textField
-        numPasses?.text = "Display \(Int(sender.value)) records"
+        //Set the value in lblNumPasses textField
+        lblNumPasses?.text = "Display \(Int(sender.value)) records"
     }
 
     //MARK: Override Methods
@@ -65,6 +68,10 @@ class MainViewController: UIViewController {
         //Set delegates for tableView
         tableView.delegate = self
         tableView.dataSource = self
+        
+        //Register reusable cell classes for cells and header
+        //tableView.register(ISSTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        //tableView.register(ISSHeaderView.self, forCellReuseIdentifier: headerIdentifier)
         
         //Set delegate for LocationManager
         locationManager.delegate = self
@@ -89,16 +96,21 @@ class MainViewController: UIViewController {
     private func initializeUI() {
         
         // Add Refresh Control to tableView for pulldown refresh
-        let refreshControl = UIRefreshControl()
-        tableView.refreshControl = refreshControl
-
-        //Set border for Refresh button
-        refreshButton.layer.cornerRadius = 5.0
-        refreshButton.layer.borderColor = UIColor.blue.cgColor
-        refreshButton.layer.borderWidth = 2.0
+        // Comment out the next line before running XCUITest, otherwise app never seem to idle.
+        tableView.refreshControl = UIRefreshControl()
         
-        //Set initial value in numPasses textField
-        numPasses?.text = "Display 5 records"
+        //Set border for Refresh button, text color etc.
+        btnRefresh.backgroundColor = UIColor.black
+        btnRefresh.layer.cornerRadius = 15.0
+        btnRefresh.layer.borderColor = UIColor.blue.cgColor
+        btnRefresh.layer.borderWidth = 2.0
+        btnRefresh.layer.shadowOffset = CGSize(width: 5, height: 5)
+        btnRefresh.layer.shadowRadius = 3.0
+        btnRefresh.layer.shadowOpacity = 0.6
+        btnRefresh.setTitleColor(UIColor.white, for: .normal)
+        
+        //Set initial value in lblNumPasses textField
+        lblNumPasses?.text = "Display 5 records"
         
         //Set stepper control's min, max and increment values
         stepper.minimumValue = 1
@@ -108,7 +120,20 @@ class MainViewController: UIViewController {
         stepper.isContinuous = true
         
         //Hide user location label till data is available
-        userLocation.isHidden = true
+        lblUserLocation.isHidden = true
+        
+        //Add a Tap Gesture Recognizer to toggle the Duration value from sec to h.m.s format
+        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleValues)))
+        
+        //Dynamically add a target function for clear button, without going through storyboard
+        btnClear.addTarget(self, action: #selector(clearTable), for: .touchUpInside)
+
+    }
+    
+    @objc private func clearTable(_ sender: UIButton) {
+        //Clear the dataModel and reload the tableView.
+        dataModel.removeAll()
+        tableView.reloadData()
     }
     
     private func dataLoaded(notification: Notification) {
@@ -121,7 +146,7 @@ class MainViewController: UIViewController {
         if notification.name == myNotification {
             //Stop the the tableView Refresh Control
             tableView?.refreshControl?.endRefreshing()
-            
+
             //Load the tableView now that we have dataModel filled with data
             tableView.reloadData()
          }
@@ -137,10 +162,9 @@ class MainViewController: UIViewController {
         
         //Start the tableView Refresh Control
         tableView?.refreshControl?.beginRefreshing()
-        
+
         //Initiate data load request. Refresh table when notification arrives.
         initiateDataLoadRequest(params: param)
-
     }
 }
 
@@ -152,15 +176,15 @@ extension MainViewController: CLLocationManagerDelegate {
             self.location = loc
             
             //Update location value to show current location
-            userLocation.isHidden = false
+            lblUserLocation.isHidden = false
             let numFormatter = NumberFormatter()
             numFormatter.maximumFractionDigits = 2
             let lat = numFormatter.string(from: NSNumber(value: loc.latitude))
             let lon = numFormatter.string(from: NSNumber(value: loc.longitude))
             
-            userLocation?.text = "Current Location: Latitude:\(lat!), Longitude:\(lon!)"
+            lblUserLocation?.text = "Your Location: Lat: \(lat!), Long: \(lon!)"
         } else {
-            userLocation.isHidden = true
+            lblUserLocation.isHidden = true
         }
         
     }
@@ -178,9 +202,10 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //We using standard UITableViewCell here, no need recast to custom cell class
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ISSTableViewCell
         
-        //Set the values in the cell with data in dataModel
+        //Configure the cell layout and look & feel
+        cell.lblDuration.layer.cornerRadius = 3.0
         
         //Format the date with DateFormatter
         let dateFormatter = DateFormatter()
@@ -188,13 +213,56 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         dateFormatter.dateFormat = "MMM dd, YYYY hh:mm"
         
         let dateStr = dateFormatter.string(from: dataModel[indexPath.row].risetime!)
-        cell.textLabel?.text = dateStr
-        cell.detailTextLabel?.text = "\(dataModel[indexPath.row].duration!) secs"
+        cell.lblRiseDateTime?.text = dateStr
+        
+        let duration = Int(dataModel[indexPath.row].duration!)
+        if !toggleSecsToHour { //Keep display in secs
+            cell.lblDuration?.text = getDurationString(isFormatInSec: true, value: duration)
+        } else { //Convert secs to hour/min/sec and display
+            cell.lblDuration?.text = getDurationString(isFormatInSec: false, value: duration)
+        }
+        
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Date-Time                                      Duration"
+    //Toggle values for duration between secs and hh:mm:ss format
+    @objc func toggleValues(_ sender: UITapGestureRecognizer) {
+        //We will change the seconds into hours & mins & secs and vice-versa for all rows
+        toggleSecsToHour = !toggleSecsToHour
+        tableView.reloadData()
+    }
+    
+    //Setup a custom headerview
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 32))
+        
+        //Set background color based on current date's month
+        headerView.backgroundColor = monthColor(Date())
+        headerView.layer.borderColor = UIColor.darkGray.cgColor
+        headerView.layer.borderWidth = 1.0;
+
+        //Add two labels Date-Time and Duration
+        let dateLabel = UILabel(frame: CGRect(x: 16, y: 4, width: 120, height: 24))
+        let durationLabel = UILabel(frame: CGRect(x: tableView.frame.maxX - 160, y: 4, width: 120, height: 24))
+        
+        dateLabel.text = "Date-Time"
+        dateLabel.textColor = UIColor.white
+        dateLabel.textAlignment = NSTextAlignment.center
+        dateLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        
+        durationLabel.text = "Duration"
+        durationLabel.textColor = UIColor.white
+        durationLabel.textAlignment = NSTextAlignment.center
+        durationLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+
+        headerView.addSubview(dateLabel)
+        headerView.addSubview(durationLabel)
+
+        return headerView
     }
     
     //Enable swipe delete a row in table

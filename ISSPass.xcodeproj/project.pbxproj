@@ -19,6 +19,9 @@
 		319508531FC5228600B0A828 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319508521FC5228600B0A828 /* UtilityFunctions.swift */; };
 		319508541FC5228600B0A828 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319508521FC5228600B0A828 /* UtilityFunctions.swift */; };
 		319508551FC5228600B0A828 /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319508521FC5228600B0A828 /* UtilityFunctions.swift */; };
+		31F3F6DB1FC63ED400B31AC7 /* ISSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F3F6DA1FC63ED400B31AC7 /* ISSTableViewCell.swift */; };
+		31F3F6DD1FC650F700B31AC7 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F3F6DC1FC650F700B31AC7 /* FirstViewController.swift */; };
+		31F3F6DE1FC650F700B31AC7 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F3F6DC1FC650F700B31AC7 /* FirstViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +57,8 @@
 		319508421FC4E9FA00B0A828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3195084E1FC4F2E900B0A828 /* ISSDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSDataModel.swift; sourceTree = "<group>"; };
 		319508521FC5228600B0A828 /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
+		31F3F6DA1FC63ED400B31AC7 /* ISSTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSTableViewCell.swift; sourceTree = "<group>"; };
+		31F3F6DC1FC650F700B31AC7 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		390A4814791CE9F912FBB2A6 /* Pods-ISSPass.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ISSPass.release.xcconfig"; path = "Pods/Target Support Files/Pods-ISSPass/Pods-ISSPass.release.xcconfig"; sourceTree = "<group>"; };
 		73BA16797009F505392E6368 /* Pods_ISSPass.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ISSPass.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5320A1487D301F7456AA5D3 /* Pods-ISSPass.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ISSPass.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ISSPass/Pods-ISSPass.debug.xcconfig"; sourceTree = "<group>"; };
@@ -122,6 +127,8 @@
 				319508201FC4E9F900B0A828 /* AppDelegate.swift */,
 				319508221FC4E9F900B0A828 /* MainViewController.swift */,
 				319508241FC4E9F900B0A828 /* Main.storyboard */,
+				31F3F6DC1FC650F700B31AC7 /* FirstViewController.swift */,
+				31F3F6DA1FC63ED400B31AC7 /* ISSTableViewCell.swift */,
 				3195084E1FC4F2E900B0A828 /* ISSDataModel.swift */,
 				319508521FC5228600B0A828 /* UtilityFunctions.swift */,
 				319508271FC4E9F900B0A828 /* Assets.xcassets */,
@@ -351,7 +358,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				319508231FC4E9F900B0A828 /* MainViewController.swift in Sources */,
+				31F3F6DB1FC63ED400B31AC7 /* ISSTableViewCell.swift in Sources */,
 				3195084F1FC4F2E900B0A828 /* ISSDataModel.swift in Sources */,
+				31F3F6DD1FC650F700B31AC7 /* FirstViewController.swift in Sources */,
 				319508531FC5228600B0A828 /* UtilityFunctions.swift in Sources */,
 				319508211FC4E9F900B0A828 /* AppDelegate.swift in Sources */,
 			);
@@ -370,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31F3F6DE1FC650F700B31AC7 /* FirstViewController.swift in Sources */,
 				319508551FC5228600B0A828 /* UtilityFunctions.swift in Sources */,
 				319508411FC4E9FA00B0A828 /* ISSPassUITests.swift in Sources */,
 			);
