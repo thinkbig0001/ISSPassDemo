@@ -1,11 +1,12 @@
 # ISSPassDemo
 ISSPass Demo App
 
-This is Demo App to retrieve Internation Space Station passes over a given GPS coordinate. 
+This is Demo App to retrieve International Space Station passes over a given GPS coordinate. 
 More information can be found at http://open-notify.org/Open-Notify-API/ISS-Pass-Times/
 
-Shows usage of Alamofire and SwiftyJSON usage for data parsing and some other basic UI.
-Also shows XCUITests and XCTest for basic testing.
+Shows usage of Alamofire and SwiftyJSON POD usage for data parsin.
+
+Also shows XCUITests and XCTests for basic testing.
 
 Happy coding.
 
